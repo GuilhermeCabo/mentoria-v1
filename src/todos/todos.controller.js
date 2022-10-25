@@ -22,14 +22,14 @@ class TodosController {
   };
 
   create = (request, response) => {
-    const { title, description, status } = request.body;
+    const { title, description } = request.body;
 
     const todo = new Todo();
 
     Object.assign(todo, {
       title,
       description,
-      status,
+      status: 'OPEN',
       createdAt: new Date(),
     });
 
@@ -40,7 +40,7 @@ class TodosController {
 
   update = (request, response) => {
     const { id } = request.params;
-    const { title, description, status } = request.body;
+    const { title, description  } = request.body;
 
     try {
       const updatedTodo = this.todosRepository.updateTodo({
@@ -48,14 +48,13 @@ class TodosController {
         data: {
           title,
           description,
-          status,
         },
       });
+
+      return response.json(updatedTodo);
     } catch {
       return response.json({ error: 'Update failed' });
     }
-
-    return response.json(updatedTodo);
   };
 
   delete = (request, response) => {
